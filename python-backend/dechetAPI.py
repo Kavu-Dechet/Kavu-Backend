@@ -2,9 +2,11 @@ from flask import Flask, jsonify, request, redirect, url_for, render_template
 import crud_persistence
 
 import images_persistence
+import json
+from flask_cors import CORS
 
 app = Flask(__name__)
-
+cors = CORS(app, resources={r"*": {"origins": "*"}})
 
 @app.route('/dechet/', methods=['POST'])
 def create_dechet():
@@ -48,9 +50,8 @@ def get_privacy_policy():
 @app.route('/geodechets', methods=['GET'])
 def get_geodechets():
     with open("fake.geojson","r") as file:
-        content = file.read()
-        print(content)
-        return jsonify(content.replace("\n",""))
+        content = file.read().replace("\n","")
+        return content
 
 if __name__ == '__main__':
     print("Hello from API")
