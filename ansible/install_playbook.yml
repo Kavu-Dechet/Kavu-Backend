@@ -1,9 +1,0 @@
----
-
-- name: run the playbook tasks on the localhost
-  hosts: server
-  become: yes
-  roles:
-    - role: install
-      # vars:
-         # repos: "{{ commun_repos }}"
