@@ -1,22 +1,25 @@
-# Pikachu Server
+# Kavu-Backend
 
 ## Details
-Server used for the awesome Kavu Dechet projet
+Backend pour l'application
 
-All servers actions (set up & Maintenance) must be delt with ansible, this way we can ensure consistency and resilience.
-
-## Set up
-
-### Install
+## Installation
+python3
 ```bash
-cd ansible
-ansible-playbook ansible/install.playbook.yml -i ansible/inventories/pikachu.yml
+python3 -r requirements.txt
 ```
-### Ports
-=> Opened ports [doc](https://gist.github.com/ymougenel/85e50ca15cfeab441774361c73ba6e0f#open-ports)
-* 5533 (Database)
-__TODO__: open port via ansible
 
-### Docker vs Podman
-Problèmes rencontrés avec podman, pas envie de me prendre la tete -> [désintallation de podman et installation de docker](https://www.linuxtechi.com/install-docker-ce-centos-8-rhel-8/)
-## Maintenance
+## Lancement
+### Base de donnée
+En mode dev :
+```bash
+# Si ca ne marche pas faire docker-compose up
+docker-compose start  kavu-database
+```
+
+### API Python
+(Après lancement base)
+```bash
+python3 dechetAPI.py
+```
+Application active sur le port 5000 (http://localhost:5000)

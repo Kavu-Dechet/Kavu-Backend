@@ -44,6 +44,13 @@ def upload_photo():
 def get_privacy_policy():
     return render_template("privacy-policy.html")
 
+#TODO: move to new file
+@app.route('/geodechets', methods=['GET'])
+def get_geodechets():
+    with open("fake.geojson","r") as file:
+        content = file.read()
+        print(content)
+        return jsonify(content.replace("\n",""))
 
 if __name__ == '__main__':
     print("Hello from API")
