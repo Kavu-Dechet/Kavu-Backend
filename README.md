@@ -22,4 +22,7 @@ docker-compose start  kavu-database
 ```bash
 python3 dechetAPI.py
 ```
-Application active sur le port 5000 (http://localhost:5000)
+Application active sur le port 5000 (http://localhost:5000/apidocs)
+
+NOTE Le POST /dechet/ swagger ne fonctionne pas, utiliser curl :
+ curl -d "latitude=42&longitude=43&categorie=VHU" -X POST "http://localhost:5000/dechet/"
