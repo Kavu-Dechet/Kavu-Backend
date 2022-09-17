@@ -2,7 +2,7 @@
 
 import psycopg2
 
-import config_persistence
+import persistence.config_persistence as config
 from sql import commands
 import random
 
@@ -12,7 +12,7 @@ connection = None
 def init():
     global connection
     if not connection:
-        connection = config_persistence.init_connection()
+        connection = config.init_connection()
 
 
 def query_all_dechets():

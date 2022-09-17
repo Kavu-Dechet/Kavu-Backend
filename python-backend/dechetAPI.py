@@ -2,8 +2,8 @@ from flask import Flask, jsonify, request, redirect, url_for, render_template
 from flask_cors import CORS
 from flasgger import Swagger
 
-import crud_persistence
-import images_persistence
+import persistence.crud_persistence as dechetsDAO
+import persistence.images_persistence as imagesDAO
 import json
 
 app = Flask(__name__)
@@ -20,7 +20,7 @@ def get_all_dechets():
       200:
         description: La listes des déchets
     """
-    result = crud_persistence.query_all_dechets()
+    result = dechetsDAO.query_all_dechets()
     if result:
         return jsonify(status="True",
                        result=[
@@ -72,7 +72,7 @@ def create_dechet():
     """
     # On recupere le corps (payload) de la requete
     payload = request.form.to_dict()
-    result = crud_persistence.insert_dechet(**payload)
+    result = dechetsDAO.insert_dechet(**payload)
 
     if result:
         return jsonify(status='True', message='Dechet created')
@@ -84,7 +84,7 @@ def upload_photo():
         print("Error: no photo attached")
         return redirect(request.url)
     file = request.files['photo']
-    filename = images_persistence.save_image(file)
+    filename = imagesDAO.save_image(file)
     return redirect(url_for('upload_photo', filename=filename))
 
 #TODO: move to new file
@@ -108,5 +108,5 @@ def get_geodechets():
 
 if __name__ == '__main__':
     print("Hello from API")
-    crud_persistence.init()
+    dechetsDAO.init()
     app.run(host='0.0.0.0', port=5000, debug=True)

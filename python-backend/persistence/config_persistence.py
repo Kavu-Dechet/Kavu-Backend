@@ -36,7 +36,7 @@ def create_tables():
         print(error)
 
 
-def config(filename='database.ini', section='postgresql'):
+def config(filename='persistence/database.ini', section='postgresql'):
     # create a parser
     parser = ConfigParser()
     # read config file

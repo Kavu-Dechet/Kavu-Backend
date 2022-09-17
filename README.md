@@ -26,3 +26,18 @@ Application active sur le port 5000 (http://localhost:5000/apidocs)
 
 NOTE Le POST /dechet/ swagger ne fonctionne pas, utiliser curl :
  curl -d "latitude=42&longitude=43&categorie=VHU" -X POST "http://localhost:5000/dechet/"
+
+# Structure projet
+
+## Python
+Le point d'entrée est dechetAPI. Il s'agit d'une API Python Flask au format REST. La documentation des méthodes est automatiquement chargée par le module Swagger (endpoint /apidocs )
+
+### persistence
+Le dossier dossier contient toute les opérations sur la base de données :
+* config_persistence permet d'initialiser la base si cette dernière est vierge
+* crud_persistence gère toutes les sauvegardes de déchets (hors image)
+* images_persistences sauvegardes les images de déchets
+
+## Docker
+* Le fichier Dockerfile permet de définir comment construire une image Docker/Kavu-Back
+* Le fichier docker-compose.yml est regroupe toutes les composants du back (base + API python)

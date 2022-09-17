@@ -2,10 +2,9 @@
 from configparser import ConfigParser
 import os
 from werkzeug.utils import secure_filename
+from  persistence.config_persistence import config
 
-import config_persistence
-
-UPLOAD_FOLDER = config_persistence.config("database.ini", "upload")["folder"]
+UPLOAD_FOLDER = config("persistence/database.ini", "upload")["folder"]
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 
