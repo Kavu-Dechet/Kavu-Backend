@@ -1,22 +1,43 @@
-# Pikachu Server
+# Kavu-Backend
 
 ## Details
-Server used for the awesome Kavu Dechet projet
+Backend pour l'application
 
-All servers actions (set up & Maintenance) must be delt with ansible, this way we can ensure consistency and resilience.
-
-## Set up
-
-### Install
+## Installation
+python3
 ```bash
-cd ansible
-ansible-playbook ansible/install.playbook.yml -i ansible/inventories/pikachu.yml
+python3 -r requirements.txt
 ```
-### Ports
-=> Opened ports [doc](https://gist.github.com/ymougenel/85e50ca15cfeab441774361c73ba6e0f#open-ports)
-* 5533 (Database)
-__TODO__: open port via ansible
 
-### Docker vs Podman
-Problèmes rencontrés avec podman, pas envie de me prendre la tete -> [désintallation de podman et installation de docker](https://www.linuxtechi.com/install-docker-ce-centos-8-rhel-8/)
-## Maintenance
+## Lancement
+### Base de donnée
+En mode dev :
+```bash
+# Si ca ne marche pas faire docker-compose up
+docker-compose start  kavu-database
+```
+
+### API Python
+(Après lancement base)
+```bash
+python3 dechetAPI.py
+```
+Application active sur le port 5000 (http://localhost:5000/apidocs)
+
+NOTE Le POST /dechet/ swagger ne fonctionne pas, utiliser curl :
+ curl -d "latitude=42&longitude=43&categorie=VHU" -X POST "http://localhost:5000/dechet/"
+
+# Structure projet
+
+## Python
+Le point d'entrée est dechetAPI. Il s'agit d'une API Python Flask au format REST. La documentation des méthodes est automatiquement chargée par le module Swagger (endpoint /apidocs )
+
+### persistence
+Le dossier dossier contient toute les opérations sur la base de données :
+* config_persistence permet d'initialiser la base si cette dernière est vierge
+* crud_persistence gère toutes les sauvegardes de déchets (hors image)
+* images_persistences sauvegardes les images de déchets
+
+## Docker
+* Le fichier Dockerfile permet de définir comment construire une image Docker/Kavu-Back
+* Le fichier docker-compose.yml est regroupe toutes les composants du back (base + API python)
