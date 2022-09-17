@@ -1,3 +1,5 @@
+# Config ne fonctionne pas pour le moment, a fixer plus tard
+
 # Cf : https://medium.com/quantrium-tech/creating-a-hello-world-api-functionality-using-swagger-ui-and-python-42e2a5335ff0
 # swagger_template = dict(
 #     info = {

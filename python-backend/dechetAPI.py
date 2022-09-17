@@ -16,6 +16,16 @@ def get_all_dechets():
     """Récupérer tous les déchets
     Renvoit tous les déchets présents dans la base
     ---
+    definitions:
+      Dechet:
+        type: object
+        properties:
+          latitude:
+            type: integer
+          longitude:
+            type: integer
+          categorie:
+            type: string
     responses:
       200:
         description: La listes des déchets
@@ -54,16 +64,6 @@ def create_dechet():
         enum: ['all', 'VHU', 'D3E']
         required: true
         default: all
-    definitions:
-      Dechet:
-        type: object
-        properties:
-          latitude:
-            type: integer
-          longitude:
-            type: integer
-          categorie:
-            type: string
     responses:
       200:
         description: Le déchet publier
@@ -92,10 +92,36 @@ def upload_photo():
 def get_privacy_policy():
     return render_template("privacy-policy.html")
 
-#TODO: move to new file
 @app.route('/geodechets', methods=['GET'])
 def get_geodechets():
     """Récupérer les geoDechets
+    Renvoit tous les déchets sous forme de geojson
+    ---
+    responses:
+      200:
+        description: La listes des geodéchets
+    """
+    result = dechetsDAO.query_all_dechets()
+    geojson={
+        "type": "FeatureCollection",
+        "features":[
+       {"geometry": {
+         "type": "Point",
+         "coordinates": [dechet[1],dechet[2]]
+         },
+        "type": "Feature",
+        "properties": {
+            "popupContent": "Mayotte"
+        },
+        "id": dechet[0]
+         } for dechet in result
+        ]
+    }
+    return jsonify(geojson)
+
+@app.route('/geodechets2', methods=['GET'])
+def get_fake_geodechets():
+    """Récupérer fake geoDechets
     Renvoit tous les déchets sosu forme de geojson
     ---
     responses:
@@ -105,7 +131,6 @@ def get_geodechets():
     with open("fake.geojson","r") as file:
         content = file.read().replace("\n","")
         return content
-
 if __name__ == '__main__':
     print("Hello from API")
     dechetsDAO.init()
