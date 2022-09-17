@@ -107,7 +107,7 @@ def get_geodechets():
         "features":[
        {"geometry": {
          "type": "Point",
-         "coordinates": [dechet[1],dechet[2]]
+         "coordinates": [dechet[2],dechet[1]]
          },
         "type": "Feature",
         "properties": {
