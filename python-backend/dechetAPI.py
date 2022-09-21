@@ -132,6 +132,7 @@ def get_geodechets():
          },
         "type": "Feature",
         "properties": {
+            "categorie": dechet[3],
             "popupContent": "Mayotte"
         },
         "id": dechet[0]
