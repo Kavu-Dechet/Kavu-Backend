@@ -78,6 +78,27 @@ def create_dechet():
         return jsonify(status='True', message='Dechet created')
     return jsonify(status='False')
 
+@app.route('/dechet/<id>', methods=['DELETE'])
+def delete_dechet(id):
+    """Supprime un déchet
+    Supprime un déchet
+    ---
+    parameters:
+      - name: id
+        in: path
+        type: integer
+    responses:
+      200:
+        description: Le déchet publier
+        schema:
+          $ref: '#/definitions/Dechet'
+    """
+    result = dechetsDAO.delete_dechet(id)
+
+    if result:
+        return jsonify(status='True', message='Dechet created')
+    return jsonify(status='False')
+
 @app.route('/photo/', methods=['POST'])
 def upload_photo():
     if 'photo' not in request.files:

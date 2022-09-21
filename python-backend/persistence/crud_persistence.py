@@ -3,7 +3,7 @@
 import psycopg2
 
 import persistence.config_persistence as config
-from sql import commands
+from persistence.sql import commands
 import random
 
 connection = None
@@ -40,26 +40,18 @@ def insert_dechet(latitude, longitude, categorie):
         print(error)
 
 
-def create_tables():
-    """ create tables in the PostgreSQL database"""
-    conn = None
+def delete_dechet(id):
+    """Supprime un dechet"""
     try:
-        # # read the connection parameters
-        # params = config()
-        # # connect to the PostgreSQL server
-        # conn = psycopg2.connect(**params)
+        # create a new cursor
         cur = connection.cursor()
-        # create table one by one
-        for command in commands.CREATE_TABLES:
-            cur.execute(command)
-        # close communication with the PostgreSQL database server
-        cur.close()
-        # commit the changes
+        # execute the INSERT statement
+        cur.execute(commands.DELETE_DECHET, (id))
+        # commit the changes to the database
         connection.commit()
     except (Exception, psycopg2.DatabaseError) as error:
-        print("Erreur création")
+        print("Erreur supprission dechet : " + id)
         print(error)
-
 
 if __name__ == '__main__':
     create_tables()

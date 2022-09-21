@@ -17,3 +17,4 @@ INSERT_DECHET = """INSERT INTO dechets (latitude,longitude, categorie)
              VALUES(%s,%s, %s)
              RETURNING id"""
 
+DELETE_DECHET = """DELETE FROM dechets where id=%s"""

@@ -2,7 +2,7 @@
 from configparser import ConfigParser
 
 import psycopg2
-from sql import commands
+from persistence.sql import commands
 import random
 
 connection = None
@@ -14,7 +14,6 @@ def init_connection():
     connection = psycopg2.connect(**params)
     create_tables()
     return connection
-
 
 def create_tables():
     """ create tables in the PostgreSQL database"""
