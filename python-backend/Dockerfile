@@ -7,7 +7,7 @@ RUN mkdir /tmp/images
 
 COPY . /api
 WORKDIR /api
-COPY docker_database.ini database.ini
+COPY persistence/docker_database.ini persistence/database.ini
 
 EXPOSE 5000
 
