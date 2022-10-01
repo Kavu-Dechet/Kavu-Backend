@@ -66,12 +66,15 @@ def create_dechet():
         default: all
     responses:
       200:
-        description: Le déchet publier
+        description: Le déchet publié
         schema:
           $ref: '#/definitions/Dechet'
     """
     # On recupere le corps (payload) de la requete
     payload = request.form.to_dict()
+    if not validate_dechet(**payload):
+        print("dechet invalid: " + str(payload))
+        return jsonify(status='False', message='Dechet invalide: ' + str(payload))
     result = dechetsDAO.insert_dechet(**payload)
 
     if result:
@@ -144,7 +147,7 @@ def get_geodechets():
 @app.route('/geodechets2', methods=['GET'])
 def get_fake_geodechets():
     """Récupérer fake geoDechets
-    Renvoit tous les déchets sosu forme de geojson
+    Renvoit tous les déchets sous forme de geojson
     ---
     responses:
       200:
@@ -153,6 +156,10 @@ def get_fake_geodechets():
     with open("fake.geojson","r") as file:
         content = file.read().replace("\n","")
         return content
+
+def validate_dechet(latitude, longitude, categorie):
+    return categorie != "null" and float(longitude) > 44.92 and float(latitude) < 45.3210 and float(latitude) > -13 and float(latitude) < -12.6
+
 if __name__ == '__main__':
     print("Hello from API")
     dechetsDAO.init()
