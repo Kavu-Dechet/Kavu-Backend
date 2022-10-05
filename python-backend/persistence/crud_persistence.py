@@ -32,9 +32,10 @@ def insert_dechet(latitude, longitude, categorie):
         # execute the INSERT statement
         cur.execute(commands.INSERT_DECHET, (latitude, longitude, categorie))
         # commit the changes to the database
-        connection.commit()
+        id = connection.commit()
         # close communication with the database
         cur.close()
+        return id
     except (Exception, psycopg2.DatabaseError) as error:
         print("Erreur insertion")
         print(error)
