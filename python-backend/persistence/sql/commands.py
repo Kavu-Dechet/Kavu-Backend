@@ -80,15 +80,82 @@ CREATE_TABLES = (
     )
     """)
 
-INSERT_DECHET = """INSERT INTO dechets (latitude,longitude, categorie)
+## INSERT
+""" To insert a trash into the database :
+    1) INSERT_POSITION_TRASH_POINT
+        need
+            latitude
+            longitude
+        return
+            positionId
+    2) INSERT_PICTURE_TRASH
+        need
+            uri
+        return
+            pictureId
+    3) INSERT_REPORTING_ACTION
+        need
+            dateTime
+            pictures (pictureId)
+        return
+            actionOnTrashId
+    4) INSERT_TRASH
+        need
+            location (positionId)
+            categories (trashCategoryId)
+            userId
+            reporting (actionOnTrashId)
+
+            return trashId
+"""
+
+"""INSERT_POSITION_TRASH_POINT parameters :
+        latitude
+        longitude
+
+        return : positionId
+        """
+INSERT_POSITION_TRASH_POINT = """ INSERT INTO Positions (category, coordinates)
+                                    VALUES("trashPoint", (%s,%s))
+                                    RETURNING positionId;"""
+""" INSERT_PICTURES_TRASH parameters :
+        uri : location of the file
+
+        return pictureId
+"""
+INSERT_PICTURE_TRASH = """ INSERT INTO Pictures (uri, publishable)
+                                    VALUES(%s, false)
+                                    RETURNING pictureId;"""
+"""INSERT_REPORTING_ACTION parameters :
+        dateTime : date and time of reception (format: TIMESTAMP WITH TIME ZONE)
+        pictures : array of pictureId from Pictures table
+
+        return actionOnTrashId
+"""
+
+INSERT_REPORTING_ACTION = """ INSERT INTO ActionsOnTrash (category, dateTime, pictures)
+                        VALUES("TrashReporting", %s, %s)
+                        RETURNING actionOnTrashId;"""
+
+"""INSERT_TRASH parameters :
+        location : positionId from Positions table
+        categories : array of trashCategoryId from TrashCategories
+        userId : userId from Users table
+        reporting : actionOnTrashId from ActionsOnTrash
+
+        return trashId
+        """
+INSERT_TRASH = """INSERT INTO Trashs (location,categorie, userId, reporting)
              VALUES(%s,%s, %s)
-             RETURNING id"""
+             RETURNING trashId;"""
+
+## DELETE
 
 DELETE_DECHET = """DELETE FROM dechets where id=%s"""
 
 
 """
-postgres type documentation :
+POSTGRESQL type documentation :
 geometric data types : https://www.postgresql.org/docs/11/datatype-geometric.html
 - point : https://www.postgresql.org/docs/11/datatype-geometric.html#id-1.5.7.16.5
 syntax :
