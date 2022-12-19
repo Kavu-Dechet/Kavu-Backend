@@ -17,7 +17,7 @@ def init():
 
 def query_all_dechets():
     cursor = connection.cursor()
-    query = "SELECT * FROM dechets"
+    query = commands.FETCH_DECHET
     cursor.execute(query)
     results = cursor.fetchall()
     cursor.close()
@@ -29,9 +29,15 @@ def insert_dechet(latitude, longitude, categorie):
     try:
         # create a new cursor
         cur = connection.cursor()
-        # execute the INSERT statement
+        # insertion du déchet
         cur.execute(commands.INSERT_DECHET, (latitude, longitude, categorie))
-        # commit the changes to the database
+        id_dechet = cur.fetchone()[0]
+        # publication
+        connection.commit()
+        cur.execute(commands.INSERT_DECHET_CATEGORIE, (id_dechet, categorie))
+        id_dechet_categorie = cur.fetchone()[0]
+
+        # publication
         connection.commit()
         # close communication with the database
         cur.close()

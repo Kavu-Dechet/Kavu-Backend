@@ -8,7 +8,7 @@ Backend pour l'application
 * [Docker compose](https://docs.docker.com/compose/install/)
 * Modules python3
 ```bash
-python3 -r requirements.txt
+pip install -r python-backend/requirements.txt -v
 ```
 ## Lancement
 ### Base de donnée

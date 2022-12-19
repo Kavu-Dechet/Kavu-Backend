@@ -158,7 +158,7 @@ def get_fake_geodechets():
         return content
 
 def validate_dechet(latitude, longitude, categorie):
-    return categorie != "null" and float(longitude) > 44.92 and float(latitude) < 45.3210 and float(latitude) > -13 and float(latitude) < -12.6
+    return True #categorie != "null" and float(longitude) > 44.92 and float(latitude) < 45.3210 and float(latitude) > -13 and float(latitude) < -12.6
 
 if __name__ == '__main__':
     print("Hello from API")
