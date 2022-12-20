@@ -52,7 +52,7 @@ INSERT_ACTION_DECHET = """INSERT INTO actions_dechets (dechet_categorie_id, stat
 
 DELETE_DECHET = """DELETE FROM dechets where id=%s"""
 
-FETCH_DECHET = """SELECT actions_dechets.id_action_dechet, dechet.latitude, dechet.longitude, dechets_categories.categorie
+FETCH_DECHET = """SELECT actions_dechets.action_dechet_id, dechets.latitude, dechets.longitude, dechets_categories.categorie, actions_dechets.statut
                     FROM actions_dechets
                     INNER JOIN dechets_categories
                     ON dechets_categories.dechet_categorie_id=actions_dechets.dechet_categorie_id

@@ -34,10 +34,11 @@ def get_all_dechets():
     if result:
         return jsonify(status="True",
                        result=[
-                           {"id": dechet[0],
-                            "latitude": dechet[1],
-                            "longitude": dechet[2],
-                            "categorie": dechet[3]} for dechet in result])
+                           {"id": actionDechet[0],
+                            "latitude": actionDechet[1],
+                            "longitude": actionDechet[2],
+                            "categorie": actionDechet[3],
+                            "statut": actionDechet[4]} for actionDechet in result])
     return jsonify(status="False")
 
 
@@ -136,21 +137,22 @@ def get_geodechets():
         "features": [
             {"geometry": {
                 "type": "Point",
-                "coordinates": [dechet[2], dechet[1]]
+                "coordinates": [actionDechet[2], actionDechet[1]]
             },
                 "type": "Feature",
                 "properties": {
-                    "categorie": dechet[3],
+                    "categorie": actionDechet[3],
+                    "statut": actionDechet[4],
                     "popupContent": "Mayotte"
                 },
-                "id": dechet[0]
-            } for dechet in result
+                "id": actionDechet[0]
+            } for actionDechet in result
         ]
     }
     return jsonify(geojson)
 
 
-@app.route('/geodechets2', methods=['GET'])
+@app.route('/fake_geodechets', methods=['GET'])
 def get_fake_geodechets():
     """Récupérer fake geoDechets
     Renvoit tous les déchets sous forme de geojson
