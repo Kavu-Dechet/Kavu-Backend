@@ -26,20 +26,20 @@ def query_all_dechets():
 
 def insert_dechet(latitude, longitude, categorie):
     """ Insert un nouveau dechet"""
+    categories = [categorie]
     try:
         # create a new cursor
         cur = connection.cursor()
         # insertion du déchet
-        cur.execute(commands.INSERT_DECHET, (latitude, longitude, categorie))
+        cur.execute(commands.INSERT_DECHET, (latitude, longitude))
         id_dechet = cur.fetchone()[0]
-        # publication
-        connection.commit()
-        cur.execute(commands.INSERT_DECHET_CATEGORIE, (id_dechet, categorie))
-        id_dechet_categorie = cur.fetchone()[0]
 
-        # publication
+        for categorie in categories:
+            cur.execute(commands.INSERT_DECHET_CATEGORIE, (id_dechet, categorie))
+            id_dechet_categorie = cur.fetchone()[0]
+            cur.execute(commands.INSERT_ACTION_DECHET, (id_dechet_categorie, "CREATION", None, 42))
+
         connection.commit()
-        # close communication with the database
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
         print("Erreur insertion")
@@ -58,6 +58,7 @@ def delete_dechet(id):
     except (Exception, psycopg2.DatabaseError) as error:
         print("Erreur supprission dechet : " + id)
         print(error)
+
 
 if __name__ == '__main__':
     create_tables()

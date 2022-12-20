@@ -161,6 +161,6 @@ def validate_dechet(latitude, longitude, categorie):
     return True #categorie != "null" and float(longitude) > 44.92 and float(latitude) < 45.3210 and float(latitude) > -13 and float(latitude) < -12.6
 
 if __name__ == '__main__':
-    print("Hello from API")
+    print("Hello from KavuDechet API")
     dechetsDAO.init()
     app.run(host='0.0.0.0', port=5000, debug=True)

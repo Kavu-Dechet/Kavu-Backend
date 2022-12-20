@@ -15,7 +15,7 @@ CREATE_TABLES = (
     CREATE TABLE IF NOT EXISTS dechets_categories (
         dechet_categorie_id BIGSERIAL PRIMARY KEY,
         dechet_id BIGSERIAL,
-        longitude FLOAT,  
+        categorie VARCHAR(60),  
         CONSTRAINT fk_dechet
             FOREIGN KEY(dechet_id) 
             REFERENCES dechets(dechet_id)      
@@ -48,7 +48,7 @@ INSERT_DECHET_CATEGORIE = """INSERT INTO dechets_categories (dechet_id,categorie
 
 INSERT_ACTION_DECHET = """INSERT INTO actions_dechets (dechet_categorie_id, statut, date_action, utilisateur_id)
              VALUES(%s,%s,%s,%s)
-             RETURNING id"""
+             RETURNING action_dechet_id"""
 
 DELETE_DECHET = """DELETE FROM dechets where id=%s"""
 
