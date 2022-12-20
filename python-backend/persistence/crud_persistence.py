@@ -40,6 +40,7 @@ def insert_dechet(latitude, longitude, categories):
 
         connection.commit()
         cur.close()
+        return id
     except (Exception, psycopg2.DatabaseError) as error:
         print("Erreur insertion")
         print(error)

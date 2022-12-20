@@ -78,7 +78,7 @@ def create_dechet():
         print("dechet invalid: " + str(payload))
         return jsonify(status='False', message='Dechet invalide: ' + str(payload))
     result = dechetsDAO.insert_dechet(**payload)
-
+    
     if result:
         return jsonify(status='True', message='Dechet created')
     return jsonify(status='False')
