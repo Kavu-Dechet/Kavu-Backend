@@ -33,6 +33,28 @@ CREATE_TABLES = (
               REFERENCES dechets_categories(dechet_categorie_id)
       )
       """,
+    """
+  CREATE TABLE IF NOT EXISTS photos (
+      photo_id BIGSERIAL PRIMARY KEY,
+      photo_nom BIGSERIAL,
+      verifiee BOOLEAN,
+      path varchar(100),
+      nom varchar(150)
+  )
+  """,
+    """
+  CREATE TABLE IF NOT EXISTS actions_photos (
+      action_photo_id BIGSERIAL PRIMARY KEY,
+      photo_id BIGSERIAL,
+      action_id BIGSERIAL,
+      CONSTRAINT fk_photo
+          FOREIGN KEY(photo_id)
+          REFERENCES photos(photo_id),
+      CONSTRAINT fk_action
+          FOREIGN KEY(action_id)
+          REFERENCES actions_dechets(action_dechet_id)
+  )
+  """,
 )
 #           CONSTRAINT fk_utilisateur
 #               FOREIGN KEY(utilisateur_id)

@@ -81,4 +81,7 @@ git stash pop
 
 # Ne pas lancer de commandes docker ! Utiliser le script conçus pour ça :
 ./update-backend.sh
+
 ```
+
+Vérifier l'endpoint : http://51.68.90.188:5500/apidocs/
