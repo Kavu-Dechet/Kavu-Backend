@@ -34,31 +34,33 @@ def get_all_dechets():
     if result:
         return jsonify(status="True",
                        result=[
-                           {"id": dechet[0],
-                            "latitude": dechet[1],
-                            "longitude": dechet[2],
-                            "categorie": dechet[3]} for dechet in result])
+                           {"id": actionDechet[0],
+                            "latitude": actionDechet[1],
+                            "longitude": actionDechet[2],
+                            "categorie": actionDechet[3],
+                            "type_action": actionDechet[4]} for actionDechet in result])
     return jsonify(status="False")
+
 
 @app.route('/dechet/', methods=['POST'])
 def create_dechet():
     """Publication d'un déchet
-    Publie un déchet (lat,long et categorie)
+    Publie un déchet (lat,long et categorie). Note : Publication swagger non fonctionnelle ! Utiliser commande curl du README.md
     ---
     parameters:
-      - name: latitude
+      - name: latitude (non fonctionnelle)
         in: path
         type: integer
         enum: ['all', '-12.824511', '89']
         required: true
         default: all
-      - name: longitude
+      - name: longitude (non fonctionnelle)
         in: path
         type: integer
         enum: ['all', '45.165455', '42']
         required: true
         default: all
-      - name: categorie
+      - name: categorie (non fonctionnelle)
         in: path
         type: string
         enum: ['all', 'VHU', 'D3E']
@@ -81,6 +83,7 @@ def create_dechet():
         return jsonify(status='True', message='Dechet created')
     return jsonify(status='False')
 
+
 @app.route('/dechet/<id>', methods=['DELETE'])
 def delete_dechet(id):
     """Supprime un déchet
@@ -102,6 +105,7 @@ def delete_dechet(id):
         return jsonify(status='True', message='Dechet created')
     return jsonify(status='False')
 
+
 @app.route('/photo/', methods=['POST'])
 def upload_photo():
     if 'photo' not in request.files:
@@ -111,10 +115,12 @@ def upload_photo():
     filename = imagesDAO.save_image(file)
     return redirect(url_for('upload_photo', filename=filename))
 
-#TODO: move to new file
+
+# TODO: move to new file
 @app.route('/privacy-policy', methods=['GET'])
 def get_privacy_policy():
     return render_template("privacy-policy.html")
+
 
 @app.route('/geodechets', methods=['GET'])
 def get_geodechets():
@@ -126,25 +132,27 @@ def get_geodechets():
         description: La listes des geodéchets
     """
     result = dechetsDAO.query_all_dechets()
-    geojson={
+    geojson = {
         "type": "FeatureCollection",
-        "features":[
-       {"geometry": {
-         "type": "Point",
-         "coordinates": [dechet[2],dechet[1]]
-         },
-        "type": "Feature",
-        "properties": {
-            "categorie": dechet[3],
-            "popupContent": "Mayotte"
-        },
-        "id": dechet[0]
-         } for dechet in result
+        "features": [
+            {"geometry": {
+                "type": "Point",
+                "coordinates": [actionDechet[2], actionDechet[1]]
+            },
+                "type": "Feature",
+                "properties": {
+                    "categorie": actionDechet[3],
+                    "type_action": actionDechet[4],
+                    "popupContent": "Mayotte"
+                },
+                "id": actionDechet[0]
+            } for actionDechet in result
         ]
     }
     return jsonify(geojson)
 
-@app.route('/geodechets2', methods=['GET'])
+
+@app.route('/fake_geodechets', methods=['GET'])
 def get_fake_geodechets():
     """Récupérer fake geoDechets
     Renvoit tous les déchets sous forme de geojson
@@ -153,14 +161,18 @@ def get_fake_geodechets():
       200:
         description: La listes des geodéchets
     """
-    with open("fake.geojson","r") as file:
-        content = file.read().replace("\n","")
+    with open("fake.geojson", "r") as file:
+        content = file.read().replace("\n", "")
         return content
 
-def validate_dechet(latitude, longitude, categorie):
-    return categorie != "null" and float(longitude) > 44.92 and float(latitude) < 45.3210 and float(latitude) > -13 and float(latitude) < -12.6
+
+def validate_dechet(latitude, longitude, categories):
+    return categories != "null" \
+           and 44.92 <= float(longitude) <= 45.32 \
+           and -13 <= float(latitude) <= -12.6
+
 
 if __name__ == '__main__':
-    print("Hello from API")
+    print("Hello from KavuDechet API")
     dechetsDAO.init()
     app.run(host='0.0.0.0', port=5000, debug=True)
