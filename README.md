@@ -37,7 +37,6 @@ curl -d "latitude=-12.9025&longitude=45.07611&categories=D3E,VHU" -X POST "http:
 curl -F "photo=@mon_image.jpg" -X POST http://localhost:5000/photo/
 ```
 
-
 # Structure projet
 
 ## Python
@@ -56,3 +55,30 @@ Le dossier dossier contient toute les opérations sur la base de données :
 
 # Ressources
 [posgres A trier](https://www.postgresqltutorial.com/postgresql-python/connect/)
+
+# Changement Version
+* Pusher le répo
+* Merge request sur master/main
+
+* Tagger le repo git tag V.x.x
+* Aller sur Pikachu -> Répertoire python-backend
+* Attention ne pas faire d'actions docker irréversibles (up/build/down risqués... passer par le script update-backend.sh)
+```sh 
+# Vérifier que c'est la branche master/main
+git branch
+
+# Faire git status   -> Trois fichiers doivents être en cours de moidifications (vert ou rouge) : docker-compose.yml,  persistence/docker_database.ini et update-backend.sh
+git status
+
+# Faire un git stash pour oublier temporairement les modifications
+git stash
+
+# Faire un git pull
+git pull
+
+# Faire git stash pop pour resortir les configs
+git stash pop
+
+# Ne pas lancer de commandes docker ! Utiliser le script conçus pour ça :
+./update-backend.sh
+```
