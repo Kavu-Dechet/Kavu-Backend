@@ -38,7 +38,7 @@ def get_all_dechets():
                             "latitude": actionDechet[1],
                             "longitude": actionDechet[2],
                             "categorie": actionDechet[3],
-                            "statut": actionDechet[4]} for actionDechet in result])
+                            "type_action": actionDechet[4]} for actionDechet in result])
     return jsonify(status="False")
 
 
@@ -142,7 +142,7 @@ def get_geodechets():
                 "type": "Feature",
                 "properties": {
                     "categorie": actionDechet[3],
-                    "statut": actionDechet[4],
+                    "type_action": actionDechet[4],
                     "popupContent": "Mayotte"
                 },
                 "id": actionDechet[0]
@@ -168,8 +168,8 @@ def get_fake_geodechets():
 
 def validate_dechet(latitude, longitude, categories):
     return categories != "null" \
-           and 44.92 < float(longitude) < 45.3210 \
-           and -13 < float(latitude) < -12.6
+           and 44.92 <= float(longitude) <= 45.32 \
+           and -13 <= float(latitude) <= -12.6
 
 
 if __name__ == '__main__':
