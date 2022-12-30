@@ -24,4 +24,3 @@ htmlcov/
 .coverage
 .coverage.*
 *,coverimages
-test.sql

@@ -34,33 +34,31 @@ def get_all_dechets():
     if result:
         return jsonify(status="True",
                        result=[
-                           {"id": actionDechet[0],
-                            "latitude": actionDechet[1],
-                            "longitude": actionDechet[2],
-                            "categorie": actionDechet[3],
-                            "type_action": actionDechet[4]} for actionDechet in result])
+                           {"id": dechet[0],
+                            "latitude": dechet[1],
+                            "longitude": dechet[2],
+                            "categorie": dechet[3]} for dechet in result])
     return jsonify(status="False")
-
 
 @app.route('/dechet/', methods=['POST'])
 def create_dechet():
     """Publication d'un déchet
-    Publie un déchet (lat,long et categorie). Note : Publication swagger non fonctionnelle ! Utiliser commande curl du README.md
+    Publie un déchet (lat,long et categorie)
     ---
     parameters:
-      - name: latitude (non fonctionnelle)
+      - name: latitude
         in: path
         type: integer
         enum: ['all', '-12.824511', '89']
         required: true
         default: all
-      - name: longitude (non fonctionnelle)
+      - name: longitude
         in: path
         type: integer
         enum: ['all', '45.165455', '42']
         required: true
         default: all
-      - name: categorie (non fonctionnelle)
+      - name: categorie
         in: path
         type: string
         enum: ['all', 'VHU', 'D3E']
@@ -68,21 +66,17 @@ def create_dechet():
         default: all
     responses:
       200:
-        description: Le déchet publié
+        description: Le déchet publier
         schema:
           $ref: '#/definitions/Dechet'
     """
     # On recupere le corps (payload) de la requete
     payload = request.form.to_dict()
-    if not validate_dechet(**payload):
-        print("dechet invalid: " + str(payload))
-        return jsonify(status='False', message='Dechet invalide: ' + str(payload))
     result = dechetsDAO.insert_dechet(**payload)
-    
+
     if result:
         return jsonify(status='True', message='Dechet created')
     return jsonify(status='False')
-
 
 @app.route('/dechet/<id>', methods=['DELETE'])
 def delete_dechet(id):
@@ -105,7 +99,6 @@ def delete_dechet(id):
         return jsonify(status='True', message='Dechet created')
     return jsonify(status='False')
 
-
 @app.route('/photo/', methods=['POST'])
 def upload_photo():
     if 'photo' not in request.files:
@@ -115,12 +108,10 @@ def upload_photo():
     filename = imagesDAO.save_image(file)
     return redirect(url_for('upload_photo', filename=filename))
 
-
-# TODO: move to new file
+#TODO: move to new file
 @app.route('/privacy-policy', methods=['GET'])
 def get_privacy_policy():
     return render_template("privacy-policy.html")
-
 
 @app.route('/geodechets', methods=['GET'])
 def get_geodechets():
@@ -132,47 +123,37 @@ def get_geodechets():
         description: La listes des geodéchets
     """
     result = dechetsDAO.query_all_dechets()
-    geojson = {
+    geojson={
         "type": "FeatureCollection",
-        "features": [
-            {"geometry": {
-                "type": "Point",
-                "coordinates": [actionDechet[2], actionDechet[1]]
-            },
-                "type": "Feature",
-                "properties": {
-                    "categorie": actionDechet[3],
-                    "type_action": actionDechet[4],
-                    "popupContent": "Mayotte"
-                },
-                "id": actionDechet[0]
-            } for actionDechet in result
+        "features":[
+       {"geometry": {
+         "type": "Point",
+         "coordinates": [dechet[2],dechet[1]]
+         },
+        "type": "Feature",
+        "properties": {
+            "categorie": dechet[3],
+            "popupContent": "Mayotte"
+        },
+        "id": dechet[0]
+         } for dechet in result
         ]
     }
     return jsonify(geojson)
 
-
-@app.route('/fake_geodechets', methods=['GET'])
+@app.route('/geodechets2', methods=['GET'])
 def get_fake_geodechets():
     """Récupérer fake geoDechets
-    Renvoit tous les déchets sous forme de geojson
+    Renvoit tous les déchets sosu forme de geojson
     ---
     responses:
       200:
         description: La listes des geodéchets
     """
-    with open("fake.geojson", "r") as file:
-        content = file.read().replace("\n", "")
+    with open("fake.geojson","r") as file:
+        content = file.read().replace("\n","")
         return content
-
-
-def validate_dechet(latitude, longitude, categories):
-    return categories != "null" \
-           and 44.92 <= float(longitude) <= 45.32 \
-           and -13 <= float(latitude) <= -12.6
-
-
 if __name__ == '__main__':
-    print("Hello from KavuDechet API")
+    print("Hello from API")
     dechetsDAO.init()
     app.run(host='0.0.0.0', port=5000, debug=True)
