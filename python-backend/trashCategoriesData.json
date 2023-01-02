@@ -1,0 +1,91 @@
+{ "content": [
+  {
+    "id": "0",
+    "name": "encboisplas",
+    "fullname": "Encombrant Bois Plastique",
+    "filename": "chair",
+    "description": "Déchet encombrant en bois ou en plastique qui, du fait de son poids et de son volume, n'est pas pris en charge par le service de collecte des ordures ménagères.",
+    "AttributionCredit": "https://www.flaticon.com/free-icon/chair_7952269?related_id=7952269&origin=pack"
+  },
+    {
+      "id": "1",
+      "name": "encfer",
+      "fullname": "Encombrant Ferraille",
+      "filename": "scrap",
+      "description": "Déchets encombrants métalique qui, du fait de son poids et de son volume, n'est pas pris en charge par le service de collecte des ordures ménagères.",
+      "AttributionCredit": "https://www.flaticon.com/free-icon/scrap_8040424?term=metal%20waste&page=1&position=26&page=1&position=26&related_id=8040424&origin=search"
+    },  {
+      "id": "2",
+      "name": "d3e",
+      "fullname": "Déchet d'Équipement Électrique et Électronique (D3E)",
+      "filename": "microwave",
+      "description": "C’est un équipement fonctionnant sur secteur ou bien avec des piles ou batteries, devenu hors d’usage.",
+    "AttributionCredit": "https://www.flaticon.com/free-icon/microwave_7952274?related_id=7952274&origin=pack "
+    },  {
+      "id": "3",
+      "name": "vert",
+      "fullname": "Déchet Vert",
+      "filename": "core",
+      "description": "Les résidus verts ou déchets verts sont des déchets biodégradables issus des restes de végétaux provenant de la taille et de l'entretien des espaces verts publics et privés.",
+    "AttributionCredit": "https://www.flaticon.com/free-icon/core_7951994?related_id=7951994&origin=pack"
+    },  {
+      "id": "4",
+      "name": "voiture",
+      "fullname": "Véhicule Hors d'Usage",
+      "filename": "scraping",
+      "description": "Un véhicule hors d'usage est un véhicule en fin de vie, à l'état d'épave ou en 'voie d'épavisation'.",
+    "AttributionCredit": "https://www.flaticon.com/free-icon/scraping_7952216?related_id=7952216&origin=pack"
+    },  {
+      "id": "5",
+      "name": "gravat",
+      "fullname": "Déchet de chantier",
+      "filename": "excavator",
+      "description": "Gravat et déchets provenant de travail de gros oeuvres.",
+    "AttributionCredit": "https://www.flaticon.com/free-icon/excavator_7952165?related_id=7952165&origin=pack"
+    },  {
+      "id": "6",
+      "name": "menager",
+      "fullname": "Ordure Ménagère",
+      "filename": "stink",
+      "description": "Un déchet ménager est tout déchet, dangereux ou non dangereux, dont le producteur est un ménage.",
+    "AttributionCredit": "https://www.flaticon.com/free-icon/stink_3239565?term=trash&page=1&position=37&page=1&position=37&related_id=3239565&origin=search"
+    },  {
+      "id": "7",
+      "name": "batterie",
+      "fullname": "Batterie de véhicule",
+      "filename": "car_battery",
+      "description": "Batterie de voiture, camion ou moto.",
+    "AttributionCredit": "https://www.flaticon.com/free-icon/car-battery_7952338?related_id=7952338&origin=pack"
+    },  {
+      "id": "8",
+      "name": "pneu",
+      "fullname": "Pneu de véhicule",
+      "filename": "tyre",
+      "description": "Pneumatique de voiture, camion ou moto.",
+    "AttributionCredit": "https://www.flaticon.com/free-icon/tyre_7952052?related_id=7952052&origin=pack"
+    },  {
+      "id": "9",
+      "name": "autre",
+      "fullname": "Déchet non catégorisable",
+      "filename": "question",
+      "description": "Déchet qui ne rentre dans aucune catégorie présente ou dont la catégorie n'est pas identifiable.",
+    "AttributionCredit": "https://www.flaticon.com/free-icon/question_747446?term=question&page=1&position=15&page=1&position=15&related_id=747446&origin=style"
+    },
+    {
+      "id": "10",
+      "name": "Urgent",
+      "fullname": "Déchet à collecter en urgence",
+      "filename": "warning",
+      "description": "Déchet représentant une gène ou un danger immédiat qu'il faut collecter en urgence. (sur une route, ...)",
+      "AttributionCredit": "https://www.flaticon.com/free-icon/warning_7745220?term=warning%20sign&page=1&position=5&page=1&position=5&related_id=7745220&origin=style"
+    },
+      {
+      "id": "10",
+      "name": "Toxique",
+      "fullname": "Déchet Toxique",
+      "filename": "toxic_waste",
+      "description": "Un déchet dangereux se caractérisent par leur dangerosité pour l'environnement ou la santé à travers leurs effets directs ou indirects à court, moyen ou long terme.. ",
+      "AttributionCredit": "https://www.flaticon.com/free-icon/toxic-waste_7952190?related_id=7952190&origin=pack"
+    }
+  ]
+}

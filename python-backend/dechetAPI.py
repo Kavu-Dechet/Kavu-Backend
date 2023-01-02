@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, redirect, url_for, render_template
+from flask import Flask, jsonify, request, redirect, url_for, render_template, send_from_directory
 from flask_cors import CORS
 from flasgger import Swagger
 
@@ -78,7 +78,7 @@ def create_dechet():
         print("dechet invalid: " + str(payload))
         return jsonify(status='False', message='Dechet invalide: ' + str(payload))
     result = dechetsDAO.insert_dechet(**payload)
-    
+
     if result:
         return jsonify(status='True', message='Dechet created')
     return jsonify(status='False')
@@ -171,6 +171,23 @@ def validate_dechet(latitude, longitude, categories):
            and 44.92 <= float(longitude) <= 45.32 \
            and -13 <= float(latitude) <= -12.6
 
+### categories
+
+# image endpoint
+@app.route('/category/image/<filename>')
+def get_file(filename):
+    return send_from_directory('./categories_images/', filename)
+
+
+@app.route('/categories', methods=['GET'])
+def categories():
+    """
+    Renvoie le json contenant toutes les categories de déchets et infos dessus.
+    """
+    with open("trashCategoriesData.json", 'r') as jsonFile:
+        jsonData = json.load(jsonFile)
+        #print(type(jsonData[0]))
+        return jsonify(jsonData) # dumps : list of dict to json
 
 if __name__ == '__main__':
     print("Hello from KavuDechet API")
