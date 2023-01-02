@@ -6,6 +6,8 @@ import persistence.crud_persistence as dechetsDAO
 import persistence.images_persistence as imagesDAO
 import json
 
+from service.image_service import get_image
+
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
 swagger = Swagger(app)
@@ -78,7 +80,7 @@ def create_dechet():
         print("dechet invalid: " + str(payload))
         return jsonify(status='False', message='Dechet invalide: ' + str(payload))
     result = dechetsDAO.insert_dechet(**payload)
-    
+
     if result:
         return jsonify(status='True', message='Dechet created')
     return jsonify(status='False')
@@ -144,7 +146,7 @@ def get_geodechets():
                     "categorie": actionDechet[3],
                     "type_action": actionDechet[4],
                     "popupContent": "Mayotte"
-                },
+            },
                 "id": actionDechet[0]
             } for actionDechet in result
         ]
@@ -168,8 +170,44 @@ def get_fake_geodechets():
 
 def validate_dechet(latitude, longitude, categories):
     return categories != "null" \
-           and 44.92 <= float(longitude) <= 45.32 \
-           and -13 <= float(latitude) <= -12.6
+        and 44.92 <= float(longitude) <= 45.32 \
+        and -13 <= float(latitude) <= -12.6
+
+# categories
+
+# image endpoint
+
+
+@app.route('/category/image/<filename>')
+def get_file(filename):
+    """Renvoie l'image d'une catégorie
+    Renvoie l'image servant d'icone pour une catégorie de déchets.
+    ---
+    parameters:
+      - name: filename
+        in: path
+    responses:
+      200:
+        description: icone correspondant à la catégorie
+
+    """
+    return get_image('./categories_images/', filename)
+
+
+@app.route('/categories', methods=['GET'])
+def categories():
+    """Renvoie le json contenant toutes les categories de déchets et infos dessus.
+    Renvoie un json contenant toutes les informations à propos des catégories de déchets.
+    ---
+    responses:
+      200:
+        description: un fichier json contenant un tableau. 
+
+    """
+    with open("trashCategoriesData.json", 'r') as jsonFile:
+        jsonData = json.load(jsonFile)
+        # print(type(jsonData[0]))
+        return jsonify(jsonData)  # dumps : list of dict to json
 
 
 if __name__ == '__main__':
