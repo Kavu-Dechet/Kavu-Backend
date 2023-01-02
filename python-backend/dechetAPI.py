@@ -1,10 +1,12 @@
-from flask import Flask, jsonify, request, redirect, url_for, render_template, send_from_directory
+from flask import Flask, jsonify, request, redirect, url_for, render_template
 from flask_cors import CORS
 from flasgger import Swagger
 
 import persistence.crud_persistence as dechetsDAO
 import persistence.images_persistence as imagesDAO
 import json
+
+from service.image_service import get_image
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
@@ -144,7 +146,7 @@ def get_geodechets():
                     "categorie": actionDechet[3],
                     "type_action": actionDechet[4],
                     "popupContent": "Mayotte"
-                },
+            },
                 "id": actionDechet[0]
             } for actionDechet in result
         ]
@@ -168,15 +170,28 @@ def get_fake_geodechets():
 
 def validate_dechet(latitude, longitude, categories):
     return categories != "null" \
-           and 44.92 <= float(longitude) <= 45.32 \
-           and -13 <= float(latitude) <= -12.6
+        and 44.92 <= float(longitude) <= 45.32 \
+        and -13 <= float(latitude) <= -12.6
 
-### categories
+# categories
 
 # image endpoint
+
+
 @app.route('/category/image/<filename>')
 def get_file(filename):
-    return send_from_directory('./categories_images/', filename)
+    """Renvoie l'image d'une catégorie
+    Renvoie l'image servant d'icone pour une catégorie de déchets.
+    ---
+    parameters:
+      - name: filename
+        in: path
+    responses:
+      200:
+        description: icone correspondant à la catégorie
+
+    """
+    return get_image('./categories_images/', filename)
 
 
 @app.route('/categories', methods=['GET'])
@@ -186,8 +201,9 @@ def categories():
     """
     with open("trashCategoriesData.json", 'r') as jsonFile:
         jsonData = json.load(jsonFile)
-        #print(type(jsonData[0]))
-        return jsonify(jsonData) # dumps : list of dict to json
+        # print(type(jsonData[0]))
+        return jsonify(jsonData)  # dumps : list of dict to json
+
 
 if __name__ == '__main__':
     print("Hello from KavuDechet API")
