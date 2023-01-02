@@ -196,8 +196,13 @@ def get_file(filename):
 
 @app.route('/categories', methods=['GET'])
 def categories():
-    """
-    Renvoie le json contenant toutes les categories de déchets et infos dessus.
+    """Renvoie le json contenant toutes les categories de déchets et infos dessus.
+    Renvoie un json contenant toutes les informations à propos des catégories de déchets.
+    ---
+    responses:
+      200:
+        description: un fichier json contenant un tableau. 
+
     """
     with open("trashCategoriesData.json", 'r') as jsonFile:
         jsonData = json.load(jsonFile)
