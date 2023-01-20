@@ -32,7 +32,7 @@ Application active sur le port 5000 (http://localhost:5000/apidocs)
 #Get all dechets
 curl http://localhost:5000/dechet/
 # Post dechets position
-curl -d "latitude=-12.9025&longitude=45.07611&categories=D3E,VHU" -X POST "http://localhost:5000/dechet/"
+curl -d "latitude=-12.9025&longitude=45.07611&categories=d3e,vhu" -X POST "http://localhost:5000/dechet/"
 # Post dechet image
 curl -F "photo=@mon_image.jpg" -X POST http://localhost:5000/photo/
 ```

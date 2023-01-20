@@ -24,13 +24,13 @@ def query_all_dechets():
     return results
 
 
-def insert_dechet(latitude, longitude, categories):
+def insert_dechet(latitude, longitude, commune, categories):
     """ Insert un nouveau dechet"""
     try:
         # create a new cursor
         cur = connection.cursor()
         # insertion du déchet
-        cur.execute(commands.INSERT_DECHET, (latitude, longitude))
+        cur.execute(commands.INSERT_DECHET, (latitude, longitude, commune))
         id_dechet = cur.fetchone()[0]
 
         for categorie in categories.split(","):
