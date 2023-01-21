@@ -7,6 +7,7 @@ import persistence.images_persistence as imagesDAO
 import json
 
 from service.image_service import get_image
+from localisation.PointDansPolygone import trouver_commune
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
@@ -40,7 +41,8 @@ def get_all_dechets():
                             "latitude": actionDechet[1],
                             "longitude": actionDechet[2],
                             "categorie": actionDechet[3],
-                            "type_action": actionDechet[4]} for actionDechet in result])
+                            "commune": actionDechet[4],
+                            "type_action": actionDechet[5]} for actionDechet in result])
     return jsonify(status="False")
 
 
@@ -79,7 +81,11 @@ def create_dechet():
     if not validate_dechet(**payload):
         print("dechet invalid: " + str(payload))
         return jsonify(status='False', message='Dechet invalide: ' + str(payload))
-    result = dechetsDAO.insert_dechet(**payload)
+    latitude = payload["latitude"]
+    longitude = payload['longitude']
+    categories = payload['categories']
+    commune = trouver_commune(latitude, longitude)
+    result = dechetsDAO.insert_dechet(latitude, longitude, commune, categories)
 
     if result:
         return jsonify(status='True', message='Dechet created')
@@ -104,7 +110,7 @@ def delete_dechet(id):
     result = dechetsDAO.delete_dechet(id)
 
     if result:
-        return jsonify(status='True', message='Dechet created')
+        return jsonify(status='True', message='Dechet deleted')
     return jsonify(status='False')
 
 
@@ -144,9 +150,10 @@ def get_geodechets():
                 "type": "Feature",
                 "properties": {
                     "categorie": actionDechet[3],
-                    "type_action": actionDechet[4],
+                    "commune": actionDechet[4],
+                    "type_action": actionDechet[5],
                     "popupContent": "Mayotte"
-            },
+                },
                 "id": actionDechet[0]
             } for actionDechet in result
         ]
@@ -172,6 +179,7 @@ def validate_dechet(latitude, longitude, categories):
     return categories != "null" \
         and 44.92 <= float(longitude) <= 45.32 \
         and -13 <= float(latitude) <= -12.6
+
 
 # categories
 
