@@ -124,12 +124,6 @@ def upload_photo():
     return redirect(url_for('upload_photo', filename=filename))
 
 
-# TODO: move to new file
-@app.route('/privacy-policy', methods=['GET'])
-def get_privacy_policy():
-    return render_template("privacy-policy.html")
-
-
 @app.route('/geodechets', methods=['GET'])
 def get_geodechets():
     """Récupérer les geoDechets
