@@ -24,7 +24,7 @@ def query_all_dechets():
     return results
 
 
-def insert_dechet(latitude, longitude, commune, categories):
+def insert_dechet(userId, latitude, longitude, commune, categories):
     """ Insert un nouveau dechet"""
     try:
         # create a new cursor
@@ -36,7 +36,7 @@ def insert_dechet(latitude, longitude, commune, categories):
         for categorie in categories.split(","):
             cur.execute(commands.INSERT_DECHET_CATEGORIE, (id_dechet, categorie))
             id_dechet_categorie = cur.fetchone()[0]
-            cur.execute(commands.INSERT_ACTION_DECHET, (id_dechet_categorie, "CREATION", None, 42))
+            cur.execute(commands.INSERT_ACTION_DECHET, (id_dechet_categorie, "CREATION", None, userId))
 
         connection.commit()
         cur.close()

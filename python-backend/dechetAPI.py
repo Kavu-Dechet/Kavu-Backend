@@ -81,11 +81,15 @@ def create_dechet():
     if not validate_dechet(**payload):
         print("dechet invalid: " + str(payload))
         return jsonify(status='False', message='Dechet invalide: ' + str(payload))
+    if "userhashid" in payload: # Temporary fix for version compatibility
+        userId = payload["userhashid"]
+    else:
+        userId = 42
     latitude = payload["latitude"]
     longitude = payload['longitude']
     categories = payload['categories']
     commune = trouver_commune(latitude, longitude)
-    result = dechetsDAO.insert_dechet(latitude, longitude, commune, categories)
+    result = dechetsDAO.insert_dechet(userId, latitude, longitude, commune, categories)
 
     if result:
         return jsonify(status='True', message='Dechet created')
@@ -122,12 +126,6 @@ def upload_photo():
     file = request.files['photo']
     filename = imagesDAO.save_image(file)
     return redirect(url_for('upload_photo', filename=filename))
-
-
-# TODO: move to new file
-@app.route('/privacy-policy', methods=['GET'])
-def get_privacy_policy():
-    return render_template("privacy-policy.html")
 
 
 @app.route('/geodechets', methods=['GET'])
@@ -175,7 +173,7 @@ def get_fake_geodechets():
         return content
 
 
-def validate_dechet(latitude, longitude, categories):
+def validate_dechet(latitude, longitude, categories, userhashid):
     return categories != "null" \
         and 44.92 <= float(longitude) <= 45.32 \
         and -13 <= float(latitude) <= -12.6
