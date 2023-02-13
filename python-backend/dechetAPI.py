@@ -81,7 +81,10 @@ def create_dechet():
     if not validate_dechet(**payload):
         print("dechet invalid: " + str(payload))
         return jsonify(status='False', message='Dechet invalide: ' + str(payload))
-    userId = payload["userhashid"]
+    if "userhashid" in payload: # Temporary fix for version compatibility
+        userId = payload["userhashid"]
+    else:
+        userId = 42
     latitude = payload["latitude"]
     longitude = payload['longitude']
     categories = payload['categories']
