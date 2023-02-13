@@ -173,7 +173,7 @@ def get_fake_geodechets():
         return content
 
 
-def validate_dechet(latitude, longitude, categories):
+def validate_dechet(latitude, longitude, categories, userhashid):
     return categories != "null" \
         and 44.92 <= float(longitude) <= 45.32 \
         and -13 <= float(latitude) <= -12.6

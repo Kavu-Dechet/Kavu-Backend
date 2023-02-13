@@ -1,43 +1,62 @@
 # Kavu-Backend
 
-## Details
-Backend pour l'application
+## Fonctionnement
+L'application Kavu permet de géolocaliser des déchets : 
 
-## Installation
+<img src=".README/kavu-usage.png">
+
+## Details de l'API
+L'API est en python, elle fait l'intermédiaire entre les requêtes et la base de données.
+
+## Installation (~5 min)
+
+### Installation de la base de données
+La base de données de test que nous utilisons est sous docker.
+Pour installer docker et docker-compose :
 * [Docker](https://docs.docker.com/engine/install/)
 * [Docker compose](https://docs.docker.com/compose/install/)
-* Modules python3
+Pour vérifier l'installation tester les commandes ci-dessous : 
+```bash
+docker --version
+docker-compose --version
+docker run hello-world
+```
+### Installation des modules python (~2 mins)
+L'application utilise le framework flask, ainsi que plusieurs modules. Pour effectuer une installation complète :
 ```bash
 pip install -r python-backend/requirements.txt -v
 ```
+
 ## Lancement
-### Base de donnée
-base de données:
+### Base de données
+Une fois docker et docker-compose installés, vous pouvez lancer la base de données :
 ```bash
-docker-compose up kavu-database
-# TODO: ajouter un docker-wait-for-it pour lancer backend
-# docker-compose build
-# docker-compose up kavu-backend
+cd python-backend
+docker-compose up kavu-backend &
 ```
-API (Après lancement base)
+Une base est lancée et disponible au port 5432 (les informations de la base se trouvent dans le fichier docker-compose.yml).
+
+### API Python
+une fois la base prête, vous pouvez lancer l'API python : 
 ```bash
 python3 dechetAPI.py
 ```
-### API Python
-
 Application active sur le port 5000 (http://localhost:5000/apidocs)
 
 **NOTE** Le POST /dechet/ swagger ne fonctionne pas, utiliser curl :
 ```bash
-#Get all dechets
+# Récupération de tous les déchets
 curl http://localhost:5000/dechet/
-# Post dechets position
+# Post d'un dechets
 curl -d "latitude=-12.9025&longitude=45.07611&categories=d3e,vhu" -X POST "http://localhost:5000/dechet/"
 # Post dechet image
 curl -F "photo=@mon_image.jpg" -X POST http://localhost:5000/photo/
 ```
 
-# Structure projet
+## Structure projet
+
+## Base de données
+<img src=".README/kavu_db_schema.png">
 
 ## Python
 Le point d'entrée est dechetAPI. Il s'agit d'une API Python Flask au format REST. La documentation des méthodes est automatiquement chargée par le module Swagger (endpoint /apidocs )
