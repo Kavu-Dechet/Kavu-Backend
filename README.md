@@ -88,24 +88,25 @@ Le dossier dossier contient toute les opérations sur la base de données :
 
 
 ## Ressources
-[posgres](https://www.postgresqltutorial.com/postgresql-python/connect/)
+[postgresql](https://www.postgresqltutorial.com/postgresql-python/connect/)
 
-# Maintenance serveur
+# Maintenance serveur (pour les administrateurs)
 ## Changement Version
 * Pusher le répo
 * Merge request sur master/main
 * Tagger le repo git tag V.x.x
-* Aller sur Pikachu -> Répertoire python-backend
+* Aller sur le serveur Pikachu -> Répertoire python-backend
 * Attention ne pas faire d'actions docker irréversibles (up/build/down risqués... passer par le script update-backend.sh)
 ```sh 
-# Vérifier que c'est la branche master/main
-git branch
 
 # Faire git status   -> Trois fichiers doivents être en cours de moidifications (vert ou rouge) : docker-compose.yml,  persistence/docker_database.ini et update-backend.sh
 git status
 
 # Faire un git stash pour oublier temporairement les modifications
 git stash
+
+# Vérifier qu'on est sur la branche master
+git checkout master
 
 # Faire un git pull
 git pull
