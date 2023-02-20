@@ -78,13 +78,14 @@ def create_dechet():
     """
     # On recupere le corps (payload) de la requete
     payload = request.form.to_dict()
-    if not validate_dechet(**payload):
-        print("dechet invalid: " + str(payload))
-        return jsonify(status='False', message='Dechet invalide: ' + str(payload))
     if "userhashid" in payload: # Temporary fix for version compatibility
         userId = payload["userhashid"]
     else:
         userId = 42
+    if not validate_dechet(**payload):
+        print("dechet invalid: " + str(payload))
+        return jsonify(status='False', message='Dechet invalide: ' + str(payload))
+
     latitude = payload["latitude"]
     longitude = payload['longitude']
     categories = payload['categories']
