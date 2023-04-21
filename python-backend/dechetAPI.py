@@ -175,9 +175,10 @@ def get_fake_geodechets():
 
 
 def validate_dechet(latitude, longitude, categories, userhashid):
-    return categories != "null" \
-        and 44.92 <= float(longitude) <= 45.32 \
-        and -13 <= float(latitude) <= -12.6
+    # NOTE: restrictions à Mayotte (ci-dessous) commenté pour autoriser les tests depuis la métropole
+    return categories != "null" #\
+        #and 44.92 <= float(longitude) <= 45.32 \
+        #and -13 <= float(latitude) <= -12.6
 
 
 # categories
