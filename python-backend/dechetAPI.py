@@ -207,7 +207,7 @@ def get_file(filename):
         description: icone correspondant à la catégorie
 
     """
-    return get_image('./assets/categories_images/', filename)
+    return get_image('./assets/categories/images/', filename)
 
 
 @app.route('/categories', methods=['GET'])
@@ -220,7 +220,7 @@ def categories():
         description: un fichier json contenant un tableau. 
 
     """
-    with open("trashCategoriesData.json", 'r') as jsonFile:
+    with open("assets/categories/trashCategoriesData.json", 'r') as jsonFile:
         jsonData = json.load(jsonFile)
         # print(type(jsonData[0]))
         return jsonify(jsonData)  # dumps : list of dict to json
