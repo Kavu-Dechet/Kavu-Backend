@@ -2,7 +2,7 @@
 from configparser import ConfigParser
 
 import psycopg2
-from lib.persistence.sql import commands
+from libs.persistence.sql import commands
 import random
 
 connection = None

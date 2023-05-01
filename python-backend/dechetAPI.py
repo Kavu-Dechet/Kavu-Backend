@@ -2,12 +2,12 @@ from flask import Flask, jsonify, request, redirect, url_for, render_template
 from flask_cors import CORS
 from flasgger import Swagger
 
-import lib.persistence.crud_persistence as dechetsDAO
-import lib.persistence.images_persistence as imagesDAO
+import libs.persistence.crud_persistence as dechetsDAO
+import libs.persistence.images_persistence as imagesDAO
 import json
 
-from lib.service.image_service import get_image
-from lib.localisation.PointDansPolygone import trouver_commune
+from libs.service.image_service import get_image
+from libs.localisation.PointDansPolygone import trouver_commune
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
