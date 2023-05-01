@@ -27,12 +27,13 @@ def get_all_dechets():
             type: integer
           longitude:
             type: integer
-          categorie:
+          category:
             type: string
     responses:
       200:
         description: La listes des déchets
     """
+    # On récupère les déchets de la bdd
     result = dechetsDAO.query_all_dechets()
     if result:
         return jsonify(status="True",
@@ -40,7 +41,7 @@ def get_all_dechets():
                            {"id": actionDechet[0],
                             "latitude": actionDechet[1],
                             "longitude": actionDechet[2],
-                            "categorie": actionDechet[3],
+                            "category": actionDechet[3],
                             "commune": actionDechet[4],
                             "type_action": actionDechet[5]} for actionDechet in result])
     return jsonify(status="False")
@@ -49,7 +50,7 @@ def get_all_dechets():
 @app.route('/dechet/', methods=['POST'])
 def create_dechet():
     """Publication d'un déchet
-    Publie un déchet (lat,long et categorie). Note : Publication swagger non fonctionnelle ! Utiliser commande curl du README.md
+    Publie un déchet (lat,long et category). Note : Publication swagger non fonctionnelle ! Utiliser commande curl du README.md
     ---
     parameters:
       - name: latitude (non fonctionnelle)
@@ -64,7 +65,7 @@ def create_dechet():
         enum: ['all', '45.165455', '42']
         required: true
         default: all
-      - name: categorie (non fonctionnelle)
+      - name: category (non fonctionnelle)
         in: path
         type: string
         enum: ['all', 'VHU', 'D3E']
@@ -78,22 +79,41 @@ def create_dechet():
     """
     # On recupere le corps (payload) de la requete
     payload = request.form.to_dict()
+
+    # On trouve le userId (42 quand il n'y en a pas)
     if "userhashid" in payload: # Temporary fix for version compatibility
         userId = payload["userhashid"]
     else:
+        payload['userhashid'] = 42 # Temporary fix for version compatibility
         userId = 42
-    if not validate_dechet(**payload):
-        print("dechet invalid: " + str(payload))
-        return jsonify(status='False', message='Dechet invalide: ' + str(payload))
-
+    
+    # On valide le dechet (latitude, longitude, categories, userhashid)
+    if not 'latitude' in payload:
+        return jsonify(status='False', message='latitude manquante')
+    if not 'longitude' in payload:
+        return jsonify(status='False', message='longitude manquante')
+    if not 'category' in payload:
+        return jsonify(status='False', message='category manquante')
+    if not 'userhashid' in payload:
+        return jsonify(status='False', message='userhashid manquant')
+    
+    # On vérifie que les coordonnées sont présentes correspondent à Mayotte
+    # if not -13 <= float(payload['latitude']) <= -12.6:
+    #     return jsonify(status='False', message='latitude invalide')
+    # if not 44.92 <= float(payload['longitude']) <= 45.32:
+    #     return jsonify(status='False', message='longitude invalide')
+    
+    # On insert le dechet
     latitude = payload["latitude"]
     longitude = payload['longitude']
-    categories = payload['categories']
+    category = payload['category']
     commune = trouver_commune(latitude, longitude)
-    result = dechetsDAO.insert_dechet(userId, latitude, longitude, commune, categories)
+    result = dechetsDAO.insert_dechet(userId, latitude, longitude, commune, category)
 
+    # On retourne le résultat
     if result:
         return jsonify(status='True', message='Dechet created')
+    
     return jsonify(status='False')
 
 
@@ -148,7 +168,7 @@ def get_geodechets():
             },
                 "type": "Feature",
                 "properties": {
-                    "categorie": actionDechet[3],
+                    "category": actionDechet[3],
                     "commune": actionDechet[4],
                     "type_action": actionDechet[5],
                     "popupContent": "Mayotte"
@@ -172,18 +192,6 @@ def get_fake_geodechets():
     with open("fake.geojson", "r") as file:
         content = file.read().replace("\n", "")
         return content
-
-
-def validate_dechet(latitude, longitude, categories, userhashid):
-    # NOTE: restrictions à Mayotte (ci-dessous) commenté pour autoriser les tests depuis la métropole
-    return categories != "null" #\
-        #and 44.92 <= float(longitude) <= 45.32 \
-        #and -13 <= float(latitude) <= -12.6
-
-
-# categories
-
-# image endpoint
 
 
 @app.route('/category/image/<filename>')
