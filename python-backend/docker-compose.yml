@@ -20,6 +20,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: kavu-backend
+    depends_on:
+      - kavu-database
     ports:
       - 5000:5000
     volumes:

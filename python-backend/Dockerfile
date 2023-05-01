@@ -8,7 +8,10 @@ RUN mkdir /tmp/images
 COPY . /api
 WORKDIR /api
 COPY persistence/docker_database.ini persistence/database.ini
+COPY wait-for-it.sh .
+
+RUN chmod +x wait-for-it.sh
 
 EXPOSE 5000
 
-CMD ["python", "dechetAPI.py"]
+CMD ["./wait-for-it.sh", "kavu-database:5432", "--", "python", "dechetAPI.py"]
