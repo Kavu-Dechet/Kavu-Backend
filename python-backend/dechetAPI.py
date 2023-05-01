@@ -189,7 +189,7 @@ def get_fake_geodechets():
       200:
         description: La listes des geodéchets
     """
-    with open("../fake_data/fake.geojson", "r") as file:
+    with open("./assets/fake/fake.geojson", "r") as file:
         content = file.read().replace("\n", "")
         return content
 
