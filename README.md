@@ -99,7 +99,7 @@ Le dossier dossier contient toute les opérations sur la base de données :
 * Attention ne pas faire d'actions docker irréversibles (up/build/down risqués... passer par le script update-backend.sh)
 ```sh 
 
-# Faire git status   -> Trois fichiers doivents être en cours de moidifications (vert ou rouge) : docker-compose.yml,  persistence/docker_database.ini et update-backend.sh
+# Faire git status   -> Trois fichiers doivents être en cours de moidifications (vert ou rouge) : docker-compose.yml,  assets/database/database.ini et update-backend.sh
 git status
 
 # Faire un git stash pour oublier temporairement les modifications

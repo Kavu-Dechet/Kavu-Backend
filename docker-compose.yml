@@ -13,11 +13,16 @@ services:
       - "5432:5432"
     networks:
       - kavu-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dbuser"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   kavu-backend:
     image: slonepi/kavu-dechet-backend:0.0.0
     build:
-      context: .
+      context: ./python-backend
       dockerfile: Dockerfile
     container_name: kavu-backend
     depends_on:
@@ -25,11 +30,13 @@ services:
     ports:
       - 5000:5000
     volumes:
-      - "./images:/tmp/images"
+      - ./images:/tmp/images
+      - ./python-backend:/api
     environment:
       - PYTHONUNBUFFERED=1
     networks:
       - kavu-network
+    command: python3 dechetAPI.py
 
 networks:
   kavu-network:

@@ -2,8 +2,8 @@
 
 import psycopg2
 
-import persistence.config_persistence as config
-from persistence.sql import commands
+import lib.persistence.config_persistence as config
+from lib.persistence.sql import commands
 import random
 
 connection = None

@@ -2,7 +2,7 @@
 from configparser import ConfigParser
 
 import psycopg2
-from persistence.sql import commands
+from lib.persistence.sql import commands
 import random
 
 connection = None
@@ -35,7 +35,7 @@ def create_tables():
         print(error)
 
 
-def config(filename='persistence/database.ini', section='postgresql'):
+def config(filename='assets/database/database.ini', section='postgresql'):
     # create a parser
     parser = ConfigParser()
     # read config file

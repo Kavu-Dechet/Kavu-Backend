@@ -2,12 +2,12 @@ from flask import Flask, jsonify, request, redirect, url_for, render_template
 from flask_cors import CORS
 from flasgger import Swagger
 
-import persistence.crud_persistence as dechetsDAO
-import persistence.images_persistence as imagesDAO
+import lib.persistence.crud_persistence as dechetsDAO
+import lib.persistence.images_persistence as imagesDAO
 import json
 
-from service.image_service import get_image
-from localisation.PointDansPolygone import trouver_commune
+from lib.service.image_service import get_image
+from lib.localisation.PointDansPolygone import trouver_commune
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
@@ -189,7 +189,7 @@ def get_fake_geodechets():
       200:
         description: La listes des geodéchets
     """
-    with open("fake.geojson", "r") as file:
+    with open("../fake_data/fake.geojson", "r") as file:
         content = file.read().replace("\n", "")
         return content
 
@@ -207,7 +207,7 @@ def get_file(filename):
         description: icone correspondant à la catégorie
 
     """
-    return get_image('./categories_images/', filename)
+    return get_image('./assets/categories_images/', filename)
 
 
 @app.route('/categories', methods=['GET'])

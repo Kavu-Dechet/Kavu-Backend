@@ -1,4 +1,4 @@
 psycopg2-binary
-flask
+flask==2.0.2
 flask-cors
 flasgger
