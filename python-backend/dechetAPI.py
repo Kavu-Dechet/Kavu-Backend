@@ -117,84 +117,7 @@ def create_dechet():
     return jsonify(status='False')
 
 
-@app.route('/dechet/<id>', methods=['DELETE'])
-def delete_dechet(id):
-    """Supprime un déchet
-    Supprime un déchet
-    ---
-    parameters:
-      - name: id
-        in: path
-        type: integer
-    responses:
-      200:
-        description: Le déchet publier
-        schema:
-          $ref: '#/definitions/Dechet'
-    """
-    result = dechetsDAO.delete_dechet(id)
-
-    if result:
-        return jsonify(status='True', message='Dechet deleted')
-    return jsonify(status='False')
-
-
-@app.route('/photo/', methods=['POST'])
-def upload_photo():
-    if 'photo' not in request.files:
-        print("Error: no photo attached")
-        return redirect(request.url)
-    file = request.files['photo']
-    filename = imagesDAO.save_image(file)
-    return redirect(url_for('upload_photo', filename=filename))
-
-
-@app.route('/geodechets', methods=['GET'])
-def get_geodechets():
-    """Récupérer les geoDechets
-    Renvoit tous les déchets sous forme de geojson
-    ---
-    responses:
-      200:
-        description: La listes des geodéchets
-    """
-    result = dechetsDAO.query_all_dechets()
-    geojson = {
-        "type": "FeatureCollection",
-        "features": [
-            {"geometry": {
-                "type": "Point",
-                "coordinates": [actionDechet[2], actionDechet[1]]
-            },
-                "type": "Feature",
-                "properties": {
-                    "category": actionDechet[3],
-                    "commune": actionDechet[4],
-                    "type_action": actionDechet[5],
-                    "popupContent": "Mayotte"
-                },
-                "id": actionDechet[0]
-            } for actionDechet in result
-        ]
-    }
-    return jsonify(geojson)
-
-
-@app.route('/fake_geodechets', methods=['GET'])
-def get_fake_geodechets():
-    """Récupérer fake geoDechets
-    Renvoit tous les déchets sous forme de geojson
-    ---
-    responses:
-      200:
-        description: La listes des geodéchets
-    """
-    with open("./assets/fake/fake.geojson", "r") as file:
-        content = file.read().replace("\n", "")
-        return content
-
-
-@app.route('/category/image/<filename>')
+@app.route('/category/image/<filename>/', methods=['GET'])
 def get_file(filename):
     """Renvoie l'image d'une catégorie
     Renvoie l'image servant d'icone pour une catégorie de déchets.
@@ -210,7 +133,7 @@ def get_file(filename):
     return get_image('./assets/categories/images/', filename)
 
 
-@app.route('/categories', methods=['GET'])
+@app.route('/categories/', methods=['GET'])
 def categories():
     """Renvoie le json contenant toutes les categories de déchets et infos dessus.
     Renvoie un json contenant toutes les informations à propos des catégories de déchets.
@@ -224,6 +147,85 @@ def categories():
         jsonData = json.load(jsonFile)
         # print(type(jsonData[0]))
         return jsonify(jsonData)  # dumps : list of dict to json
+
+
+# @app.route('/dechet/<id>/', methods=['DELETE'])
+# def delete_dechet(id):
+#     """Supprime un déchet
+#     Supprime un déchet
+#     ---
+#     parameters:
+#       - name: id
+#         in: path
+#         type: integer
+#     responses:
+#       200:
+#         description: Le déchet publier
+#         schema:
+#           $ref: '#/definitions/Dechet'
+#     """
+#     result = dechetsDAO.delete_dechet(id)
+
+#     if result:
+#         return jsonify(status='True', message='Dechet deleted')
+#     return jsonify(status='False')
+
+
+# @app.route('/photo/', methods=['POST'])
+# def upload_photo():
+#     if 'photo' not in request.files:
+#         print("Error: no photo attached")
+#         return redirect(request.url)
+#     file = request.files['photo']
+#     filename = imagesDAO.save_image(file)
+#     return redirect(url_for('upload_photo', filename=filename))
+
+
+# @app.route('/geodechets/', methods=['GET'])
+# def get_geodechets():
+#     """Récupérer les geoDechets
+#     Renvoit tous les déchets sous forme de geojson
+#     ---
+#     responses:
+#       200:
+#         description: La listes des geodéchets
+#     """
+#     result = dechetsDAO.query_all_dechets()
+#     geojson = {
+#         "type": "FeatureCollection",
+#         "features": [
+#             {"geometry": {
+#                 "type": "Point",
+#                 "coordinates": [actionDechet[2], actionDechet[1]]
+#             },
+#                 "type": "Feature",
+#                 "properties": {
+#                     "category": actionDechet[3],
+#                     "commune": actionDechet[4],
+#                     "type_action": actionDechet[5],
+#                     "popupContent": "Mayotte"
+#                 },
+#                 "id": actionDechet[0]
+#             } for actionDechet in result
+#         ]
+#     }
+#     return jsonify(geojson)
+
+
+# @app.route('/fake_geodechets/', methods=['GET'])
+# def get_fake_geodechets():
+#     """Récupérer fake geoDechets
+#     Renvoit tous les déchets sous forme de geojson
+#     ---
+#     responses:
+#       200:
+#         description: La listes des geodéchets
+#     """
+#     with open("./assets/fake/fake.geojson", "r") as file:
+#         content = file.read().replace("\n", "")
+#     return jsonify(status='True', result=content)
+
+
 
 
 if __name__ == '__main__':
