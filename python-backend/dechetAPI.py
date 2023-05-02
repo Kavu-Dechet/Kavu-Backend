@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flasgger import Swagger
 import json
 
+from swagger import swagger_config, swagger_template
 import libs.persistence.crud_persistence as dechetsDAO
 import libs.persistence.images_persistence as imagesDAO
 from libs.service.image_service import get_image
@@ -14,7 +15,7 @@ from assets.fake.fake import fakeData
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
-swagger = Swagger(app)
+swagger = Swagger(app, config=swagger_config, template=swagger_template)
 
 
 @app.route('/dechet/', methods=['GET'])
@@ -234,3 +235,4 @@ if __name__ == '__main__':
     print("Hello from KavuDechet API")
     dechetsDAO.init()
     app.run(host='0.0.0.0', port=5000, debug=True)
+    print("hello", app.__swagger__)
