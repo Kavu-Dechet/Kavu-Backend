@@ -1,5 +1,5 @@
 # Créé par Lionel, le 05/01/2023 en Python 3.7
-fichier_coord = "./localisation/communes/communes-20220101-OSM-Mayotte.geojson"
+fichier_coord = "./libs/localisation/communes/communes-20220101-OSM-Mayotte.geojson"
 import json
 
 
@@ -17,8 +17,7 @@ def trouver_commune(latitude, longitude):
                     print("le point est dans la commune de", nom_commune, sep=" ")
                     return nom_commune
 
-    print("le point n'est dans aucune commune", sep=" ")
-    return "undéfinie"
+    return "none"
 
 
 def point_dans_polygone(polygone, point):
