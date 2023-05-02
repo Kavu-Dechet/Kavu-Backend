@@ -1,13 +1,16 @@
 from flask import Flask, jsonify, request, redirect, url_for, render_template
 from flask_cors import CORS
 from flasgger import Swagger
+import json
 
 import libs.persistence.crud_persistence as dechetsDAO
 import libs.persistence.images_persistence as imagesDAO
-import json
-
 from libs.service.image_service import get_image
 from libs.localisation.PointDansPolygone import trouver_commune
+from assets.fake.fake import fakeData
+
+
+
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
@@ -145,9 +148,19 @@ def categories():
     """
     with open("assets/categories/trashCategoriesData.json", 'r') as jsonFile:
         jsonData = json.load(jsonFile)
-        # print(type(jsonData[0]))
         return jsonify(jsonData)  # dumps : list of dict to json
 
+
+@app.route('/fake_dechet/', methods=['GET'])
+def fake_dechets():
+    """Récupérer des données fakes pour le test.
+    Renvois une liste d'objets json pour le test.
+    ---
+    responses:
+      200:
+        description: La listes des fake déchets
+    """
+    return jsonify(status='True', result=fakeData['fake'])
 
 # @app.route('/dechet/<id>/', methods=['DELETE'])
 # def delete_dechet(id):
@@ -212,18 +225,7 @@ def categories():
 #     return jsonify(geojson)
 
 
-# @app.route('/fake_geodechets/', methods=['GET'])
-# def get_fake_geodechets():
-#     """Récupérer fake geoDechets
-#     Renvoit tous les déchets sous forme de geojson
-#     ---
-#     responses:
-#       200:
-#         description: La listes des geodéchets
-#     """
-#     with open("./assets/fake/fake.geojson", "r") as file:
-#         content = file.read().replace("\n", "")
-#     return jsonify(status='True', result=content)
+
 
 
 
