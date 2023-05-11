@@ -39,6 +39,7 @@ def get_all_dechets():
     """
     # On récupère les déchets de la bdd
     result = dechetsDAO.query_all_dechets()
+    
     if result:
         return jsonify(status="True",
                        result=[
@@ -69,10 +70,10 @@ def create_dechet():
         enum: ['all', '45.165455', '42']
         required: true
         default: all
-      - name: category (non fonctionnelle)
+      - name: categories (non fonctionnelle)
         in: path
         type: string
-        enum: ['all', 'VHU', 'D3E']
+        enum: ['all', 'voiture', 'D3E']
         required: true
         default: all
     responses:
@@ -96,8 +97,10 @@ def create_dechet():
         return jsonify(status='False', message='latitude manquante')
     if not 'longitude' in payload:
         return jsonify(status='False', message='longitude manquante')
-    if not 'category' in payload:
-        return jsonify(status='False', message='category manquante')
+    if not 'categories' in payload: 
+        return jsonify(status='False', message='categories manquante')
+    if payload['categories'] == "":
+        return jsonify(status='False', message='categories vide')
     if not 'userhashid' in payload:
         return jsonify(status='False', message='userhashid manquant')
     
@@ -110,9 +113,10 @@ def create_dechet():
     # On insert le dechet
     latitude = payload["latitude"]
     longitude = payload['longitude']
-    category = payload['category']
+    categories = payload['categories'] 
+    
     commune = trouver_commune(latitude, longitude)
-    result = dechetsDAO.insert_dechet(userId, latitude, longitude, commune, category)
+    result = dechetsDAO.insert_dechet(userId, latitude, longitude, commune, categories)
 
     # On retourne le résultat
     if result:
