@@ -199,35 +199,35 @@ def fake_dechets():
 #     return redirect(url_for('upload_photo', filename=filename))
 
 
-# @app.route('/geodechets/', methods=['GET'])
-# def get_geodechets():
-#     """Récupérer les geoDechets
-#     Renvoit tous les déchets sous forme de geojson
-#     ---
-#     responses:
-#       200:
-#         description: La listes des geodéchets
-#     """
-#     result = dechetsDAO.query_all_dechets()
-#     geojson = {
-#         "type": "FeatureCollection",
-#         "features": [
-#             {"geometry": {
-#                 "type": "Point",
-#                 "coordinates": [actionDechet[2], actionDechet[1]]
-#             },
-#                 "type": "Feature",
-#                 "properties": {
-#                     "category": actionDechet[3],
-#                     "commune": actionDechet[4],
-#                     "type_action": actionDechet[5],
-#                     "popupContent": "Mayotte"
-#                 },
-#                 "id": actionDechet[0]
-#             } for actionDechet in result
-#         ]
-#     }
-#     return jsonify(geojson)
+@app.route('/geodechets/', methods=['GET'])
+def get_geodechets():
+    """Récupérer les geoDechets
+    Renvoit tous les déchets sous forme de geojson
+    ---
+    responses:
+      200:
+        description: La listes des geodéchets
+    """
+    result = dechetsDAO.query_all_dechets()
+    geojson = {
+        "type": "FeatureCollection",
+        "features": [
+            {"geometry": {
+                "type": "Point",
+                "coordinates": [actionDechet[2], actionDechet[1]]
+            },
+                "type": "Feature",
+                "properties": {
+                    "category": actionDechet[3],
+                    "commune": actionDechet[4],
+                    "type_action": actionDechet[5],
+                    "popupContent": "Mayotte"
+                },
+                "id": actionDechet[0]
+            } for actionDechet in result
+        ]
+    }
+    return jsonify(geojson)
 
 
 
