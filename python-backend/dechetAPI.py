@@ -1,7 +1,9 @@
-from flask import Flask, jsonify, request, redirect, url_for, render_template
+from flask import Flask, jsonify, request, redirect, url_for, render_template, make_response
+from io import StringIO
 from flask_cors import CORS
 from flasgger import Swagger
 import json
+import csv
 
 from swagger import swagger_config, swagger_template
 import libs.persistence.crud_persistence as dechetsDAO
@@ -230,7 +232,18 @@ def get_geodechets():
     return jsonify(geojson)
 
 
-
+@app.route('/csv/', methods=['GET'])
+def get_dechets_csv():
+    result = dechetsDAO.query_all_dechets()
+    si = StringIO()
+    
+    cw = csv.writer(si)
+    cw.writerow(["id","latitude","longitude","catégorie","commune","status"])
+    cw.writerows(result)
+    output = make_response(si.getvalue())
+    output.headers["Content-Disposition"] = "attachment; filename=export-dechet.csv"
+    output.headers["Content-type"] = "text/csv"
+    return output
 
 
 
